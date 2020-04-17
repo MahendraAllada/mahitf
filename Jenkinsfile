@@ -43,21 +43,7 @@ sed -i \"s/ami-054362537f5132ce2/$ami_id/g\" /var/lib/jenkins/workspace/terramah
         stage('terraform apply') {
             steps {
                 sh 'terraform apply  -auto-approve'
-                sleep 150
-            }
-        }
-         stage('Application Deployment') {
-            steps {
-                sh label: '', script: '''pubIP=$(<publicip)
-                echo "$pubIP"
-                ssh -tt ec2-user@$pubIP
-                echo "yes"
-                sleep 5
-                git clone -b branchPy https://github.com/MahendraAllada/mahitf.git
-                sleep 5
-                cd mahitf/
-                python manage.py migrate
-                python manage.py runserver 0.0.0.0:8000'''
+            
             }
         }
        
