@@ -13,18 +13,19 @@ pipeline {
         }
         stage('terraform clone') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '7e261af1-1211-4b5a-9478-675cac127cce', url: 'https://github.com/GodsonSibreyan/Godsontf.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '2fb7dff5-dcb5-4e2f-94d0-90ef7ecc49a6', url: 'https://github.com/MahendraAllada/mahitf.git']]])
             }
         }
         stage('Parameters'){
             steps {
-                sh label: '', script: ''' sed -i \"s/user/$access_key/g\" /var/lib/jenkins/workspace/terragods/variables.tf
-sed -i \"s/password/$secret_key/g\" /var/lib/jenkins/workspace/terragods/variables.tf
-sed -i \"s/t2.micro/$instance_type/g\" /var/lib/jenkins/workspace/terragods/variables.tf
-sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/terragods/ec2.tf
-sed -i \"s/us-east-2/$instance_region/g\" /var/lib/jenkins/workspace/terragods/variables.tf
-sed -i \"s/us-east-2a/$availability_zone/g\" /var/lib/jenkins/workspace/terragods/variables.tf
-sed -i \"s/gods/$key/g\" /var/lib/jenkins/workspace/terragods/variables.tf
+                sh label: '', script: ''' sed -i \"s/user/$access_key/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/password/$secret_key/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/t2.micro/$instance_type/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/10/$instance_size/g\" /var/lib/jenkins/workspace/terramahi/ec2.tf
+sed -i \"s/ca-central-1/$instance_region/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/ca-central-1a/$subnet_zone/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/mahicanada/$key_pair/g\" /var/lib/jenkins/workspace/terramahi/variables.tf
+sed -i \"s/ami-054362537f5132ce2/$ami_id/g\" /var/lib/jenkins/workspace/terramahi/vpc.tf
 '''
                   }
             }
@@ -52,9 +53,9 @@ sed -i \"s/gods/$key/g\" /var/lib/jenkins/workspace/terragods/variables.tf
                 ssh -tt ec2-user@$pubIP
                 echo "yes"
                 sleep 5
-                git clone -b branchPy https://github.com/GodsonSibreyan/Godsontf.git
+                git clone -b branchPy https://github.com/MahendraAllada/mahitf.git
                 sleep 5
-                cd Godsontf/
+                cd mahitf/
                 python manage.py migrate
                 python manage.py runserver 0.0.0.0:8000'''
             }
